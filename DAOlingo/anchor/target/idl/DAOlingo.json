@@ -73,6 +73,71 @@
       ]
     },
     {
+      "name": "create_module",
+      "discriminator": [
+        74,
+        150,
+        3,
+        191,
+        94,
+        127,
+        118,
+        158
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true
+        },
+        {
+          "name": "module",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  111,
+                  100,
+                  117,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "name": "video_url",
+          "type": "string"
+        }
+      ]
+    },
+    {
       "name": "create_proposal",
       "discriminator": [
         132,
@@ -148,6 +213,52 @@
       ]
     },
     {
+      "name": "initialize_user",
+      "discriminator": [
+        111,
+        17,
+        185,
+        250,
+        60,
+        122,
+        38,
+        254
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "signer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "signer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
       "name": "results",
       "discriminator": [
         233,
@@ -184,6 +295,72 @@
         }
       ],
       "args": []
+    },
+    {
+      "name": "vote_module",
+      "discriminator": [
+        31,
+        9,
+        157,
+        128,
+        173,
+        185,
+        67,
+        76
+      ],
+      "accounts": [
+        {
+          "name": "module",
+          "writable": true
+        },
+        {
+          "name": "mvoter_info",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  118,
+                  111,
+                  116,
+                  101,
+                  114,
+                  95,
+                  105,
+                  110,
+                  102,
+                  111
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "module"
+              },
+              {
+                "kind": "account",
+                "path": "voter"
+              }
+            ]
+          }
+        },
+        {
+          "name": "voter",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "vote_for",
+          "type": "bool"
+        }
+      ]
     }
   ],
   "accounts": [
@@ -201,6 +378,32 @@
       ]
     },
     {
+      "name": "MVoterInfo",
+      "discriminator": [
+        197,
+        162,
+        184,
+        203,
+        45,
+        222,
+        197,
+        253
+      ]
+    },
+    {
+      "name": "Module",
+      "discriminator": [
+        234,
+        149,
+        112,
+        29,
+        65,
+        203,
+        69,
+        160
+      ]
+    },
+    {
       "name": "Proposal",
       "discriminator": [
         26,
@@ -211,6 +414,19 @@
         136,
         53,
         33
+      ]
+    },
+    {
+      "name": "User",
+      "discriminator": [
+        159,
+        117,
+        95,
+        227,
+        239,
+        151,
+        58,
+        236
       ]
     },
     {
@@ -247,6 +463,11 @@
       "code": 6003,
       "name": "InvalidProposalNumber",
       "msg": "Invalid proposal number."
+    },
+    {
+      "code": 6004,
+      "name": "UnauthorizedRole",
+      "msg": "Unauthorized: Only mentors can perform this action."
     }
   ],
   "types": [
@@ -257,6 +478,50 @@
         "fields": [
           {
             "name": "total_proposals",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MVoterInfo",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "voted",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Module",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "creator",
+            "type": "pubkey"
+          },
+          {
+            "name": "title",
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "name": "video_url",
+            "type": "string"
+          },
+          {
+            "name": "upvotes",
+            "type": "u64"
+          },
+          {
+            "name": "downvotes",
             "type": "u64"
           }
         ]
@@ -294,6 +559,40 @@
           {
             "name": "voted_against",
             "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Role",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Mentor"
+          },
+          {
+            "name": "Apprentice"
+          }
+        ]
+      }
+    },
+    {
+      "name": "User",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "key",
+            "type": "pubkey"
+          },
+          {
+            "name": "role",
+            "type": {
+              "defined": {
+                "name": "Role"
+              }
+            }
           }
         ]
       }

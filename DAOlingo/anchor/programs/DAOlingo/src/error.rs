@@ -10,4 +10,6 @@ pub enum ErrorCode {
     AlreadyVoted,
     #[msg("Invalid proposal number.")]
     InvalidProposalNumber,
+    #[msg("Unauthorized: Only mentors can perform this action.")]
+    UnauthorizedRole,
 }

@@ -1,6 +1,5 @@
 use anchor_lang::prelude::*;
 
-
 #[account]
 pub struct Proposal {
     pub user: Pubkey,
