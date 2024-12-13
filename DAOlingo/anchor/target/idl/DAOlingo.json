@@ -8,6 +8,33 @@
   },
   "instructions": [
     {
+      "name": "approve_certification",
+      "discriminator": [
+        212,
+        208,
+        101,
+        97,
+        229,
+        54,
+        70,
+        101
+      ],
+      "accounts": [
+        {
+          "name": "certification",
+          "writable": true
+        },
+        {
+          "name": "user",
+          "writable": true
+        },
+        {
+          "name": "approver"
+        }
+      ],
+      "args": []
+    },
+    {
       "name": "cast_vote",
       "discriminator": [
         20,
@@ -69,6 +96,174 @@
         {
           "name": "vote_for",
           "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "complete_module",
+      "discriminator": [
+        55,
+        250,
+        112,
+        48,
+        220,
+        136,
+        158,
+        105
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true
+        },
+        {
+          "name": "module",
+          "writable": true
+        },
+        {
+          "name": "progress",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  103,
+                  114,
+                  101,
+                  115,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "token_mint",
+          "writable": true
+        },
+        {
+          "name": "apprentice_token_account",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "module_pubkey",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "create_module",
+      "discriminator": [
+        74,
+        150,
+        3,
+        191,
+        94,
+        127,
+        118,
+        158
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true
+        },
+        {
+          "name": "module",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  111,
+                  100,
+                  117,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "token_mint",
+          "writable": true
+        },
+        {
+          "name": "mentor_token_account",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "name": "video_url",
+          "type": "string"
         }
       ]
     },
@@ -148,6 +343,52 @@
       ]
     },
     {
+      "name": "initialize_user",
+      "discriminator": [
+        111,
+        17,
+        185,
+        250,
+        60,
+        122,
+        38,
+        254
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "signer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "signer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
       "name": "results",
       "discriminator": [
         233,
@@ -184,9 +425,154 @@
         }
       ],
       "args": []
+    },
+    {
+      "name": "submit_certification",
+      "discriminator": [
+        15,
+        233,
+        175,
+        70,
+        117,
+        114,
+        224,
+        163
+      ],
+      "accounts": [
+        {
+          "name": "certification",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  101,
+                  114,
+                  116,
+                  105,
+                  102,
+                  105,
+                  99,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
+          "writable": true
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "certification_ids",
+          "type": {
+            "vec": "string"
+          }
+        }
+      ]
+    },
+    {
+      "name": "vote_module",
+      "discriminator": [
+        31,
+        9,
+        157,
+        128,
+        173,
+        185,
+        67,
+        76
+      ],
+      "accounts": [
+        {
+          "name": "module",
+          "writable": true
+        },
+        {
+          "name": "mvoter_info",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  118,
+                  111,
+                  116,
+                  101,
+                  114,
+                  95,
+                  105,
+                  110,
+                  102,
+                  111
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "module"
+              },
+              {
+                "kind": "account",
+                "path": "voter"
+              }
+            ]
+          }
+        },
+        {
+          "name": "voter",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "vote_for",
+          "type": "bool"
+        }
+      ]
     }
   ],
   "accounts": [
+    {
+      "name": "Certification",
+      "discriminator": [
+        141,
+        130,
+        166,
+        168,
+        167,
+        23,
+        163,
+        147
+      ]
+    },
     {
       "name": "Dao",
       "discriminator": [
@@ -201,6 +587,45 @@
       ]
     },
     {
+      "name": "MVoterInfo",
+      "discriminator": [
+        197,
+        162,
+        184,
+        203,
+        45,
+        222,
+        197,
+        253
+      ]
+    },
+    {
+      "name": "Module",
+      "discriminator": [
+        234,
+        149,
+        112,
+        29,
+        65,
+        203,
+        69,
+        160
+      ]
+    },
+    {
+      "name": "Progress",
+      "discriminator": [
+        125,
+        4,
+        195,
+        102,
+        134,
+        179,
+        253,
+        6
+      ]
+    },
+    {
       "name": "Proposal",
       "discriminator": [
         26,
@@ -211,6 +636,19 @@
         136,
         53,
         33
+      ]
+    },
+    {
+      "name": "User",
+      "discriminator": [
+        159,
+        117,
+        95,
+        227,
+        239,
+        151,
+        58,
+        236
       ]
     },
     {
@@ -247,9 +685,51 @@
       "code": 6003,
       "name": "InvalidProposalNumber",
       "msg": "Invalid proposal number."
+    },
+    {
+      "code": 6004,
+      "name": "UnauthorizedRole",
+      "msg": "Unauthorized: Only mentors can perform this action."
+    },
+    {
+      "code": 6005,
+      "name": "UnauthorizedRoleApprentice",
+      "msg": "Unauthorized: Only apprentices can submit certifications."
+    },
+    {
+      "code": 6006,
+      "name": "UnauthorizedApproval",
+      "msg": "Unauthorized: Only mentors can approve certifications."
+    },
+    {
+      "code": 6007,
+      "name": "CertificationAlreadyApproved",
+      "msg": "Certification is already approved."
     }
   ],
   "types": [
+    {
+      "name": "Certification",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "apprentice",
+            "type": "pubkey"
+          },
+          {
+            "name": "certifications",
+            "type": {
+              "vec": "string"
+            }
+          },
+          {
+            "name": "approved",
+            "type": "bool"
+          }
+        ]
+      }
+    },
     {
       "name": "Dao",
       "type": {
@@ -257,6 +737,74 @@
         "fields": [
           {
             "name": "total_proposals",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MVoterInfo",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "voted",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Module",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "creator",
+            "type": "pubkey"
+          },
+          {
+            "name": "title",
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "name": "video_url",
+            "type": "string"
+          },
+          {
+            "name": "upvotes",
+            "type": "u64"
+          },
+          {
+            "name": "downvotes",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Progress",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "completed_modules",
+            "type": "u64"
+          },
+          {
+            "name": "last_completed",
+            "type": "pubkey"
+          },
+          {
+            "name": "total_incentives",
             "type": "u64"
           }
         ]
@@ -294,6 +842,40 @@
           {
             "name": "voted_against",
             "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Role",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Mentor"
+          },
+          {
+            "name": "Apprentice"
+          }
+        ]
+      }
+    },
+    {
+      "name": "User",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "key",
+            "type": "pubkey"
+          },
+          {
+            "name": "role",
+            "type": {
+              "defined": {
+                "name": "Role"
+              }
+            }
           }
         ]
       }
