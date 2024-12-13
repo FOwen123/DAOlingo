@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/daolingo.json`.
  */
 export type Daolingo = {
-  "address": "HYaDDppTNC8jJkgzPunXmvnWUBFn2cSVeQam3WMShhEe",
+  "address": "FHYWnVuAha7HgqGANbEYf939JEkjp5j1udTZoKKnZJBb",
   "metadata": {
     "name": "daolingo",
     "version": "0.1.0",
