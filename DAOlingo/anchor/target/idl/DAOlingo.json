@@ -8,6 +8,33 @@
   },
   "instructions": [
     {
+      "name": "approve_certification",
+      "discriminator": [
+        212,
+        208,
+        101,
+        97,
+        229,
+        54,
+        70,
+        101
+      ],
+      "accounts": [
+        {
+          "name": "certification",
+          "writable": true
+        },
+        {
+          "name": "user",
+          "writable": true
+        },
+        {
+          "name": "approver"
+        }
+      ],
+      "args": []
+    },
+    {
       "name": "cast_vote",
       "discriminator": [
         20,
@@ -73,6 +100,89 @@
       ]
     },
     {
+      "name": "complete_module",
+      "discriminator": [
+        55,
+        250,
+        112,
+        48,
+        220,
+        136,
+        158,
+        105
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true
+        },
+        {
+          "name": "module",
+          "writable": true
+        },
+        {
+          "name": "progress",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  103,
+                  114,
+                  101,
+                  115,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "token_mint",
+          "writable": true
+        },
+        {
+          "name": "apprentice_token_account",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "module_pubkey",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
       "name": "create_module",
       "discriminator": [
         74,
@@ -116,6 +226,26 @@
           "name": "payer",
           "writable": true,
           "signer": true
+        },
+        {
+          "name": "token_mint",
+          "writable": true
+        },
+        {
+          "name": "mentor_token_account",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
         },
         {
           "name": "system_program",
@@ -297,6 +427,72 @@
       "args": []
     },
     {
+      "name": "submit_certification",
+      "discriminator": [
+        15,
+        233,
+        175,
+        70,
+        117,
+        114,
+        224,
+        163
+      ],
+      "accounts": [
+        {
+          "name": "certification",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  101,
+                  114,
+                  116,
+                  105,
+                  102,
+                  105,
+                  99,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
+          "writable": true
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "certification_ids",
+          "type": {
+            "vec": "string"
+          }
+        }
+      ]
+    },
+    {
       "name": "vote_module",
       "discriminator": [
         31,
@@ -365,6 +561,19 @@
   ],
   "accounts": [
     {
+      "name": "Certification",
+      "discriminator": [
+        141,
+        130,
+        166,
+        168,
+        167,
+        23,
+        163,
+        147
+      ]
+    },
+    {
       "name": "Dao",
       "discriminator": [
         163,
@@ -401,6 +610,19 @@
         203,
         69,
         160
+      ]
+    },
+    {
+      "name": "Progress",
+      "discriminator": [
+        125,
+        4,
+        195,
+        102,
+        134,
+        179,
+        253,
+        6
       ]
     },
     {
@@ -468,9 +690,46 @@
       "code": 6004,
       "name": "UnauthorizedRole",
       "msg": "Unauthorized: Only mentors can perform this action."
+    },
+    {
+      "code": 6005,
+      "name": "UnauthorizedRoleApprentice",
+      "msg": "Unauthorized: Only apprentices can submit certifications."
+    },
+    {
+      "code": 6006,
+      "name": "UnauthorizedApproval",
+      "msg": "Unauthorized: Only mentors can approve certifications."
+    },
+    {
+      "code": 6007,
+      "name": "CertificationAlreadyApproved",
+      "msg": "Certification is already approved."
     }
   ],
   "types": [
+    {
+      "name": "Certification",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "apprentice",
+            "type": "pubkey"
+          },
+          {
+            "name": "certifications",
+            "type": {
+              "vec": "string"
+            }
+          },
+          {
+            "name": "approved",
+            "type": "bool"
+          }
+        ]
+      }
+    },
     {
       "name": "Dao",
       "type": {
@@ -522,6 +781,30 @@
           },
           {
             "name": "downvotes",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Progress",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "completed_modules",
+            "type": "u64"
+          },
+          {
+            "name": "last_completed",
+            "type": "pubkey"
+          },
+          {
+            "name": "total_incentives",
             "type": "u64"
           }
         ]

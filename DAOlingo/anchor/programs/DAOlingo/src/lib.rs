@@ -10,7 +10,7 @@ pub mod instructions;
 pub mod error;
 
 use instructions::mentor::*;
-// use instructions::apprentice::*;
+use instructions::apprentice::*;
 use instructions::shared::*;
 
 #[program]
@@ -44,6 +44,18 @@ pub mod daolingo {
     pub fn vote_module(ctx: Context<VoteModule>, vote_for: bool) -> Result<()> {
         instructions::shared::module_vote::vote_module(ctx, vote_for)
     }
+
+    pub fn submit_certification(ctx: Context<SubmitCertification>, certification_ids: Vec<String>,) -> Result<()> {
+        instructions::shared::certification::submit_certification(ctx, certification_ids)
+    }
+
+    pub fn approve_certification(ctx: Context<ApproveCertification>) -> Result<()> {
+        instructions::shared::certification::approve_certification(ctx)
+    }
+
+    pub fn complete_module(ctx: Context<CompleteModule>, module_pubkey: Pubkey) -> Result<()> {
+        instructions::apprentice::progress_tracking::complete_module(ctx, module_pubkey)
+    }   
 }
 
 

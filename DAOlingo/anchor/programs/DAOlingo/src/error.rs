@@ -12,4 +12,10 @@ pub enum ErrorCode {
     InvalidProposalNumber,
     #[msg("Unauthorized: Only mentors can perform this action.")]
     UnauthorizedRole,
+    #[msg("Unauthorized: Only apprentices can submit certifications.")]
+    UnauthorizedRoleApprentice,
+    #[msg("Unauthorized: Only mentors can approve certifications.")]
+    UnauthorizedApproval,
+    #[msg("Certification is already approved.")]
+    CertificationAlreadyApproved,
 }

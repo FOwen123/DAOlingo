@@ -14,6 +14,33 @@ export type Daolingo = {
   },
   "instructions": [
     {
+      "name": "approveCertification",
+      "discriminator": [
+        212,
+        208,
+        101,
+        97,
+        229,
+        54,
+        70,
+        101
+      ],
+      "accounts": [
+        {
+          "name": "certification",
+          "writable": true
+        },
+        {
+          "name": "user",
+          "writable": true
+        },
+        {
+          "name": "approver"
+        }
+      ],
+      "args": []
+    },
+    {
       "name": "castVote",
       "discriminator": [
         20,
@@ -79,6 +106,89 @@ export type Daolingo = {
       ]
     },
     {
+      "name": "completeModule",
+      "discriminator": [
+        55,
+        250,
+        112,
+        48,
+        220,
+        136,
+        158,
+        105
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true
+        },
+        {
+          "name": "module",
+          "writable": true
+        },
+        {
+          "name": "progress",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  103,
+                  114,
+                  101,
+                  115,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "tokenMint",
+          "writable": true
+        },
+        {
+          "name": "apprenticeTokenAccount",
+          "writable": true
+        },
+        {
+          "name": "tokenProgram",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associatedTokenProgram",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "modulePubkey",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
       "name": "createModule",
       "discriminator": [
         74,
@@ -122,6 +232,26 @@ export type Daolingo = {
           "name": "payer",
           "writable": true,
           "signer": true
+        },
+        {
+          "name": "tokenMint",
+          "writable": true
+        },
+        {
+          "name": "mentorTokenAccount",
+          "writable": true
+        },
+        {
+          "name": "tokenProgram",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associatedTokenProgram",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
         },
         {
           "name": "systemProgram",
@@ -303,6 +433,72 @@ export type Daolingo = {
       "args": []
     },
     {
+      "name": "submitCertification",
+      "discriminator": [
+        15,
+        233,
+        175,
+        70,
+        117,
+        114,
+        224,
+        163
+      ],
+      "accounts": [
+        {
+          "name": "certification",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  101,
+                  114,
+                  116,
+                  105,
+                  102,
+                  105,
+                  99,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
+          "writable": true
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "certificationIds",
+          "type": {
+            "vec": "string"
+          }
+        }
+      ]
+    },
+    {
       "name": "voteModule",
       "discriminator": [
         31,
@@ -371,6 +567,19 @@ export type Daolingo = {
   ],
   "accounts": [
     {
+      "name": "certification",
+      "discriminator": [
+        141,
+        130,
+        166,
+        168,
+        167,
+        23,
+        163,
+        147
+      ]
+    },
+    {
       "name": "dao",
       "discriminator": [
         163,
@@ -407,6 +616,19 @@ export type Daolingo = {
         203,
         69,
         160
+      ]
+    },
+    {
+      "name": "progress",
+      "discriminator": [
+        125,
+        4,
+        195,
+        102,
+        134,
+        179,
+        253,
+        6
       ]
     },
     {
@@ -474,9 +696,46 @@ export type Daolingo = {
       "code": 6004,
       "name": "unauthorizedRole",
       "msg": "Unauthorized: Only mentors can perform this action."
+    },
+    {
+      "code": 6005,
+      "name": "unauthorizedRoleApprentice",
+      "msg": "Unauthorized: Only apprentices can submit certifications."
+    },
+    {
+      "code": 6006,
+      "name": "unauthorizedApproval",
+      "msg": "Unauthorized: Only mentors can approve certifications."
+    },
+    {
+      "code": 6007,
+      "name": "certificationAlreadyApproved",
+      "msg": "Certification is already approved."
     }
   ],
   "types": [
+    {
+      "name": "certification",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "apprentice",
+            "type": "pubkey"
+          },
+          {
+            "name": "certifications",
+            "type": {
+              "vec": "string"
+            }
+          },
+          {
+            "name": "approved",
+            "type": "bool"
+          }
+        ]
+      }
+    },
     {
       "name": "dao",
       "type": {
@@ -528,6 +787,30 @@ export type Daolingo = {
           },
           {
             "name": "downvotes",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "progress",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "completedModules",
+            "type": "u64"
+          },
+          {
+            "name": "lastCompleted",
+            "type": "pubkey"
+          },
+          {
+            "name": "totalIncentives",
             "type": "u64"
           }
         ]
