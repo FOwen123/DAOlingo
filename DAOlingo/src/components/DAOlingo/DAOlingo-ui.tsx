@@ -23,6 +23,11 @@ export function DAOlingoCreate() {
     }
   };
 
+  const handleExpirationChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const selectedDate = new Date(e.target.value).getTime();
+    setExpiration(BigInt(selectedDate));
+  };
+
   if (!publicKey) {
     return <p>Connect your wallet</p>;
   }
@@ -35,6 +40,11 @@ export function DAOlingoCreate() {
         value = {title}
         onChange = {(e) => setTitle(e.target.value)}
         className = "input input-bordered w-full max-w-xs"
+      />
+      <input
+        type="datetime-local"
+        onChange={handleExpirationChange}
+        className="input input-bordered w-full max-w-xs"
       />
       <textarea
         placeholder = "Description"
@@ -96,9 +106,9 @@ function DAOlingoCard({ account }: { account: PublicKey }) {
   const [vote, setVote] = useState(false)
   const title = accountQuery.data?.title
   const description = accountQuery.data?.description
-  const expiration = accountQuery.data?.expiration
-  const votedFor = accountQuery.data?.votedFor
-  const votedAgainst = accountQuery.data?.votedAgainst
+  const expiration = new Date(Number(accountQuery.data?.expiration) * 1000).toLocaleString(); // Format expiration date
+  const votedFor = accountQuery.data?.votedFor || 0;
+  const votedAgainst = accountQuery.data?.votedAgainst || 0;
 
   const isFormValid = !accountQuery.isLoading && !accountQuery.isError;
 
@@ -115,47 +125,64 @@ function DAOlingoCard({ account }: { account: PublicKey }) {
   return accountQuery.isLoading ? (
     <span className="loading loading-spinner loading-lg"></span>
   ) : (
-    <div className="card card-bordered border-base-300 border-4 text-neutral-content">
-      <div className="card-body items-center text-center">
-        <div className="space-y-6">
-          <h2 className="card-title justify-center text-3xl cursor-pointer" onClick={() => accountQuery.refetch()}>
-            {accountQuery.data?.title}
-          </h2>
-          <p>{accountQuery.data?.description}</p>
-          <div className="card-actions justify-around">
-            <button
-              className="btn btn-xs lg:btn-md btn-outline"
-              onClick={() => setVote(true)}
-              disabled={CastVote.isPending}
-            >
-              Vote
-            </button>
-            <button
-              className="btn btn-xs lg:btn-md btn-primary"
-              onClick={handleSubmit}
-              disabled={CastVote.isPending || !isFormValid}
-            >
-              Submit Vote {CastVote.isPending && <span className="loading loading-sm"></span>}
-            </button>
-          </div>
-          <div className="text-center space-y-4">
-            <p>
-              <ExplorerLink path={`account/${account}`} label={ellipsify(account.toString())} />
-            </p>
-            {/* <button
-              className="btn btn-xs btn-secondary btn-outline"
-              onClick={() => {
-                if (!window.confirm('Are you sure you want to close this account?')) {
-                  return
-                }
-                return closeMutation.mutateAsync()
-              }}
-              disabled={closeMutation.isPending}
-            >
-              Close
-            </button> */}
-          </div>
+    <div className="card card-bordered border-base-300 border-4 text-neutral-content w-full max-w-lg mx-auto">
+      <div className="card-body items-center text-center space-y-4">
+        {/* Title */}
+        <h2
+          className="card-title text-3xl cursor-pointer"
+          onClick={() => accountQuery.refetch()}
+        >
+          {title}
+        </h2>
+
+        {/* Description */}
+        <p className="text-base">{description}</p>
+
+        {/* Details */}
+        <div className="bg-base-200 p-4 rounded-lg shadow-md w-full">
+          <h3 className="text-lg font-bold mb-2">Proposal Details</h3>
+          <ul className="list-disc list-inside text-left">
+            <li>
+              <span className="font-semibold">Expiration:</span> {expiration}
+            </li>
+            <li>
+              <span className="font-semibold">Votes For:</span> {votedFor.toString()}
+            </li>
+            <li>
+              <span className="font-semibold">Votes Against:</span> {votedAgainst.toString()}
+            </li>
+          </ul>
         </div>
+
+        {/* Voting Buttons */}
+        <div className="card-actions justify-around mt-4">
+          <button
+            className="btn btn-xs lg:btn-md btn-outline"
+            onClick={() => setVote(true)}
+            disabled={CastVote.isPending}
+          >
+            Vote For
+          </button>
+          <button
+            className="btn btn-xs lg:btn-md btn-outline"
+            onClick={() => setVote(false)}
+            disabled={CastVote.isPending}
+          >
+            Vote Against
+          </button>
+          <button
+            className="btn btn-xs lg:btn-md btn-primary"
+            onClick={handleSubmit}
+            disabled={CastVote.isPending || !isFormValid}
+          >
+            Submit Vote {CastVote.isPending && <span className="loading loading-sm"></span>}
+          </button>
+        </div>
+
+        {/* Explorer Link */}
+        <p className="mt-4">
+          <ExplorerLink path={`account/${account}`} label={ellipsify(account.toString())} />
+        </p>
       </div>
     </div>
   )
