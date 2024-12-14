@@ -1,3 +1,0 @@
-# DAOlingo
-
-English Learning Platform

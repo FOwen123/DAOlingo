@@ -1,0 +1,3 @@
+[submodule "DAOlingo/metadata"]
+	path = DAOlingo/metadata
+	url = https://github.com/FOwen123/Lingua.git
