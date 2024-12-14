@@ -1,5 +1,5 @@
 {
-  "address": "HYaDDppTNC8jJkgzPunXmvnWUBFn2cSVeQam3WMShhEe",
+  "address": "FHYWnVuAha7HgqGANbEYf939JEkjp5j1udTZoKKnZJBb",
   "metadata": {
     "name": "daolingo",
     "version": "0.1.0",
@@ -281,22 +281,6 @@
       ],
       "accounts": [
         {
-          "name": "dao",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  100,
-                  97,
-                  111
-                ]
-              }
-            ]
-          }
-        },
-        {
           "name": "user",
           "writable": true,
           "signer": true
@@ -329,16 +313,16 @@
       ],
       "args": [
         {
+          "name": "title",
+          "type": "string"
+        },
+        {
           "name": "description",
           "type": "string"
         },
         {
           "name": "expiration",
           "type": "i64"
-        },
-        {
-          "name": "proposal_number",
-          "type": "u64"
         }
       ]
     },
@@ -574,19 +558,6 @@
       ]
     },
     {
-      "name": "Dao",
-      "discriminator": [
-        163,
-        9,
-        47,
-        31,
-        52,
-        85,
-        197,
-        49
-      ]
-    },
-    {
       "name": "MVoterInfo",
       "discriminator": [
         197,
@@ -668,41 +639,46 @@
   "errors": [
     {
       "code": 6000,
+      "name": "TitleTooLong",
+      "msg": "Title too long"
+    },
+    {
+      "code": 6001,
       "name": "DescriptionTooLong",
       "msg": "Description too long"
     },
     {
-      "code": 6001,
+      "code": 6002,
       "name": "ProposalExpired",
       "msg": "The proposal has already expired."
     },
     {
-      "code": 6002,
+      "code": 6003,
       "name": "AlreadyVoted",
       "msg": "The voter has already cast a vote."
     },
     {
-      "code": 6003,
+      "code": 6004,
       "name": "InvalidProposalNumber",
       "msg": "Invalid proposal number."
     },
     {
-      "code": 6004,
+      "code": 6005,
       "name": "UnauthorizedRole",
       "msg": "Unauthorized: Only mentors can perform this action."
     },
     {
-      "code": 6005,
+      "code": 6006,
       "name": "UnauthorizedRoleApprentice",
       "msg": "Unauthorized: Only apprentices can submit certifications."
     },
     {
-      "code": 6006,
+      "code": 6007,
       "name": "UnauthorizedApproval",
       "msg": "Unauthorized: Only mentors can approve certifications."
     },
     {
-      "code": 6007,
+      "code": 6008,
       "name": "CertificationAlreadyApproved",
       "msg": "Certification is already approved."
     }
@@ -726,18 +702,6 @@
           {
             "name": "approved",
             "type": "bool"
-          }
-        ]
-      }
-    },
-    {
-      "name": "Dao",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "total_proposals",
-            "type": "u64"
           }
         ]
       }
@@ -826,10 +790,6 @@
           {
             "name": "description",
             "type": "string"
-          },
-          {
-            "name": "vote_number",
-            "type": "u64"
           },
           {
             "name": "expiration",

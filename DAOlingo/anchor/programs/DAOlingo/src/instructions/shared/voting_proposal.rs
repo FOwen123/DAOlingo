@@ -4,41 +4,27 @@
 use anchor_lang::prelude::*;
 use anchor_lang::solana_program::clock::Clock;
 
-use crate::states::proposal::{Proposal, Dao, VoterInfo};
+use crate::states::proposal::{Proposal, VoterInfo};
 use crate::error::ErrorCode;    
 
 pub fn create_proposal(
     ctx: Context<CreateProposal>, 
+    title: String,
     description: String,
-    expiration: i64,
-    proposal_number: u64, // New parameter
+    expiration: i64, // New parameter
 ) -> Result<()> {
+    require!(title.len() <= 50, ErrorCode::TitleTooLong);
     // Enforce maximum length for description
     require!(description.len() <= 280, ErrorCode::DescriptionTooLong);
-
-    let dao = &mut ctx.accounts.dao;
-
-    // Ensure the proposal_number is correct
-    require!(
-        proposal_number == dao.total_proposals + 1,
-        ErrorCode::InvalidProposalNumber
-    );
-
-    // Generate the title as "Vote #<proposal_number>"
-    let title = format!("Vote #{}", proposal_number);
 
     // Initialize the proposal account
     let proposal = &mut ctx.accounts.proposal;
     proposal.user = ctx.accounts.user.key();
-    proposal.description = description;
     proposal.title = title;
+    proposal.description = description;
     proposal.expiration = expiration;
-    proposal.vote_number = proposal_number;
     proposal.voted_for = 0;
     proposal.voted_against = 0;
-
-    // Update dao.total_proposals
-    dao.total_proposals = proposal_number;
 
     Ok(())
 }
@@ -96,15 +82,6 @@ pub fn results(ctx: Context<Results>) -> Result<()> {
 
 #[derive(Accounts)]
 pub struct CreateProposal<'info> {
-    #[account(
-        init, // Initialize DAO only if it doesn't exist
-        seeds = [b"dao"],
-        bump,
-        payer = user,
-        space = 8 + Dao::LEN,
-    )]
-    pub dao: Account<'info, Dao>,
-
     #[account(mut)]
     pub user: Signer<'info>,
 

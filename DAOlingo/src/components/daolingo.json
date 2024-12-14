@@ -1,11 +1,5 @@
-/**
- * Program IDL in camelCase format in order to be used in JS/TS.
- *
- * Note that this is only a type helper and is not the actual IDL. The original
- * IDL can be found at `target/idl/daolingo.json`.
- */
-export type Daolingo = {
-  "address": "FHYWnVuAha7HgqGANbEYf939JEkjp5j1udTZoKKnZJBb",
+{
+  "address": "HYaDDppTNC8jJkgzPunXmvnWUBFn2cSVeQam3WMShhEe",
   "metadata": {
     "name": "daolingo",
     "version": "0.1.0",
@@ -14,7 +8,7 @@ export type Daolingo = {
   },
   "instructions": [
     {
-      "name": "approveCertification",
+      "name": "approve_certification",
       "discriminator": [
         212,
         208,
@@ -41,7 +35,7 @@ export type Daolingo = {
       "args": []
     },
     {
-      "name": "castVote",
+      "name": "cast_vote",
       "discriminator": [
         20,
         212,
@@ -58,7 +52,7 @@ export type Daolingo = {
           "writable": true
         },
         {
-          "name": "voterInfo",
+          "name": "voter_info",
           "writable": true,
           "pda": {
             "seeds": [
@@ -94,19 +88,19 @@ export type Daolingo = {
           "signer": true
         },
         {
-          "name": "systemProgram",
+          "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
         {
-          "name": "voteFor",
+          "name": "vote_for",
           "type": "bool"
         }
       ]
     },
     {
-      "name": "completeModule",
+      "name": "complete_module",
       "discriminator": [
         55,
         250,
@@ -157,19 +151,19 @@ export type Daolingo = {
           "signer": true
         },
         {
-          "name": "tokenMint",
+          "name": "token_mint",
           "writable": true
         },
         {
-          "name": "apprenticeTokenAccount",
+          "name": "apprentice_token_account",
           "writable": true
         },
         {
-          "name": "tokenProgram",
+          "name": "token_program",
           "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
         },
         {
-          "name": "associatedTokenProgram",
+          "name": "associated_token_program",
           "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
         },
         {
@@ -177,19 +171,19 @@ export type Daolingo = {
           "address": "SysvarRent111111111111111111111111111111111"
         },
         {
-          "name": "systemProgram",
+          "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
         {
-          "name": "modulePubkey",
+          "name": "module_pubkey",
           "type": "pubkey"
         }
       ]
     },
     {
-      "name": "createModule",
+      "name": "create_module",
       "discriminator": [
         74,
         150,
@@ -234,19 +228,19 @@ export type Daolingo = {
           "signer": true
         },
         {
-          "name": "tokenMint",
+          "name": "token_mint",
           "writable": true
         },
         {
-          "name": "mentorTokenAccount",
+          "name": "mentor_token_account",
           "writable": true
         },
         {
-          "name": "tokenProgram",
+          "name": "token_program",
           "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
         },
         {
-          "name": "associatedTokenProgram",
+          "name": "associated_token_program",
           "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
         },
         {
@@ -254,7 +248,7 @@ export type Daolingo = {
           "address": "SysvarRent111111111111111111111111111111111"
         },
         {
-          "name": "systemProgram",
+          "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
@@ -268,13 +262,13 @@ export type Daolingo = {
           "type": "string"
         },
         {
-          "name": "videoUrl",
+          "name": "video_url",
           "type": "string"
         }
       ]
     },
     {
-      "name": "createProposal",
+      "name": "create_proposal",
       "discriminator": [
         132,
         116,
@@ -286,6 +280,22 @@ export type Daolingo = {
         22
       ],
       "accounts": [
+        {
+          "name": "dao",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  97,
+                  111
+                ]
+              }
+            ]
+          }
+        },
         {
           "name": "user",
           "writable": true,
@@ -313,15 +323,11 @@ export type Daolingo = {
           }
         },
         {
-          "name": "systemProgram",
+          "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
-        {
-          "name": "title",
-          "type": "string"
-        },
         {
           "name": "description",
           "type": "string"
@@ -329,11 +335,15 @@ export type Daolingo = {
         {
           "name": "expiration",
           "type": "i64"
+        },
+        {
+          "name": "proposal_number",
+          "type": "u64"
         }
       ]
     },
     {
-      "name": "initializeUser",
+      "name": "initialize_user",
       "discriminator": [
         111,
         17,
@@ -372,7 +382,7 @@ export type Daolingo = {
           "signer": true
         },
         {
-          "name": "systemProgram",
+          "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
@@ -417,7 +427,7 @@ export type Daolingo = {
       "args": []
     },
     {
-      "name": "submitCertification",
+      "name": "submit_certification",
       "discriminator": [
         15,
         233,
@@ -469,13 +479,13 @@ export type Daolingo = {
           "signer": true
         },
         {
-          "name": "systemProgram",
+          "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
         {
-          "name": "certificationIds",
+          "name": "certification_ids",
           "type": {
             "vec": "string"
           }
@@ -483,7 +493,7 @@ export type Daolingo = {
       ]
     },
     {
-      "name": "voteModule",
+      "name": "vote_module",
       "discriminator": [
         31,
         9,
@@ -500,7 +510,7 @@ export type Daolingo = {
           "writable": true
         },
         {
-          "name": "mvoterInfo",
+          "name": "mvoter_info",
           "writable": true,
           "pda": {
             "seeds": [
@@ -537,13 +547,13 @@ export type Daolingo = {
           "signer": true
         },
         {
-          "name": "systemProgram",
+          "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
       "args": [
         {
-          "name": "voteFor",
+          "name": "vote_for",
           "type": "bool"
         }
       ]
@@ -551,7 +561,7 @@ export type Daolingo = {
   ],
   "accounts": [
     {
-      "name": "certification",
+      "name": "Certification",
       "discriminator": [
         141,
         130,
@@ -564,7 +574,20 @@ export type Daolingo = {
       ]
     },
     {
-      "name": "mVoterInfo",
+      "name": "Dao",
+      "discriminator": [
+        163,
+        9,
+        47,
+        31,
+        52,
+        85,
+        197,
+        49
+      ]
+    },
+    {
+      "name": "MVoterInfo",
       "discriminator": [
         197,
         162,
@@ -577,7 +600,7 @@ export type Daolingo = {
       ]
     },
     {
-      "name": "module",
+      "name": "Module",
       "discriminator": [
         234,
         149,
@@ -590,7 +613,7 @@ export type Daolingo = {
       ]
     },
     {
-      "name": "progress",
+      "name": "Progress",
       "discriminator": [
         125,
         4,
@@ -603,7 +626,7 @@ export type Daolingo = {
       ]
     },
     {
-      "name": "proposal",
+      "name": "Proposal",
       "discriminator": [
         26,
         94,
@@ -616,7 +639,7 @@ export type Daolingo = {
       ]
     },
     {
-      "name": "user",
+      "name": "User",
       "discriminator": [
         159,
         117,
@@ -629,7 +652,7 @@ export type Daolingo = {
       ]
     },
     {
-      "name": "voterInfo",
+      "name": "VoterInfo",
       "discriminator": [
         95,
         188,
@@ -645,53 +668,48 @@ export type Daolingo = {
   "errors": [
     {
       "code": 6000,
-      "name": "titleTooLong",
-      "msg": "Title too long"
-    },
-    {
-      "code": 6001,
-      "name": "descriptionTooLong",
+      "name": "DescriptionTooLong",
       "msg": "Description too long"
     },
     {
-      "code": 6002,
-      "name": "proposalExpired",
+      "code": 6001,
+      "name": "ProposalExpired",
       "msg": "The proposal has already expired."
     },
     {
-      "code": 6003,
-      "name": "alreadyVoted",
+      "code": 6002,
+      "name": "AlreadyVoted",
       "msg": "The voter has already cast a vote."
     },
     {
-      "code": 6004,
-      "name": "invalidProposalNumber",
+      "code": 6003,
+      "name": "InvalidProposalNumber",
       "msg": "Invalid proposal number."
     },
     {
-      "code": 6005,
-      "name": "unauthorizedRole",
+      "code": 6004,
+      "name": "UnauthorizedRole",
       "msg": "Unauthorized: Only mentors can perform this action."
     },
     {
-      "code": 6006,
-      "name": "unauthorizedRoleApprentice",
+      "code": 6005,
+      "name": "UnauthorizedRoleApprentice",
       "msg": "Unauthorized: Only apprentices can submit certifications."
     },
     {
-      "code": 6007,
-      "name": "unauthorizedApproval",
+      "code": 6006,
+      "name": "UnauthorizedApproval",
       "msg": "Unauthorized: Only mentors can approve certifications."
     },
     {
-      "code": 6008,
-      "name": "certificationAlreadyApproved",
+      "code": 6007,
+      "name": "CertificationAlreadyApproved",
       "msg": "Certification is already approved."
     }
   ],
   "types": [
     {
-      "name": "certification",
+      "name": "Certification",
       "type": {
         "kind": "struct",
         "fields": [
@@ -713,7 +731,19 @@ export type Daolingo = {
       }
     },
     {
-      "name": "mVoterInfo",
+      "name": "Dao",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "total_proposals",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MVoterInfo",
       "type": {
         "kind": "struct",
         "fields": [
@@ -725,7 +755,7 @@ export type Daolingo = {
       }
     },
     {
-      "name": "module",
+      "name": "Module",
       "type": {
         "kind": "struct",
         "fields": [
@@ -742,7 +772,7 @@ export type Daolingo = {
             "type": "string"
           },
           {
-            "name": "videoUrl",
+            "name": "video_url",
             "type": "string"
           },
           {
@@ -757,7 +787,7 @@ export type Daolingo = {
       }
     },
     {
-      "name": "progress",
+      "name": "Progress",
       "type": {
         "kind": "struct",
         "fields": [
@@ -766,22 +796,22 @@ export type Daolingo = {
             "type": "pubkey"
           },
           {
-            "name": "completedModules",
+            "name": "completed_modules",
             "type": "u64"
           },
           {
-            "name": "lastCompleted",
+            "name": "last_completed",
             "type": "pubkey"
           },
           {
-            "name": "totalIncentives",
+            "name": "total_incentives",
             "type": "u64"
           }
         ]
       }
     },
     {
-      "name": "proposal",
+      "name": "Proposal",
       "type": {
         "kind": "struct",
         "fields": [
@@ -798,36 +828,40 @@ export type Daolingo = {
             "type": "string"
           },
           {
+            "name": "vote_number",
+            "type": "u64"
+          },
+          {
             "name": "expiration",
             "type": "i64"
           },
           {
-            "name": "votedFor",
+            "name": "voted_for",
             "type": "u64"
           },
           {
-            "name": "votedAgainst",
+            "name": "voted_against",
             "type": "u64"
           }
         ]
       }
     },
     {
-      "name": "role",
+      "name": "Role",
       "type": {
         "kind": "enum",
         "variants": [
           {
-            "name": "mentor"
+            "name": "Mentor"
           },
           {
-            "name": "apprentice"
+            "name": "Apprentice"
           }
         ]
       }
     },
     {
-      "name": "user",
+      "name": "User",
       "type": {
         "kind": "struct",
         "fields": [
@@ -839,7 +873,7 @@ export type Daolingo = {
             "name": "role",
             "type": {
               "defined": {
-                "name": "role"
+                "name": "Role"
               }
             }
           }
@@ -847,7 +881,7 @@ export type Daolingo = {
       }
     },
     {
-      "name": "voterInfo",
+      "name": "VoterInfo",
       "type": {
         "kind": "struct",
         "fields": [
@@ -859,4 +893,4 @@ export type Daolingo = {
       }
     }
   ]
-};
+}
