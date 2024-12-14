@@ -10,8 +10,8 @@ export const metadata = {
 }
 
 const links: { label: string; path: string }[] = [
-  { label: 'Account', path: '/account' },
-  { label: 'Clusters', path: '/clusters' },
+  { label: 'Vote', path: '/voting' },
+  { label: 'Create a Proposal', path: '/createproposal' },
   { label: 'DAOlingo Program', path: '/DAOlingo' },
 ]
 
