@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+    height: 100%;
+}
+
+.wallet-adapter-button-trigger {
+    background: #023047 !important;
+    border-radius: 8px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+}
+.wallet-adapter-dropdown-list,
+.wallet-adapter-button {
+    font-family: inherit !important;
+}
+
+/* In your global CSS file */
+body, html {
+    margin: 0;
+    padding: 0;
+  }
+  
+  nav {
+    height: 100px; /* Adjust based on your navbar height */
+    background-color: darkgray;
+  }
+  
+  section {
+    padding-top: -0px; /* Matches the navbar height */
+  }
+
+  
