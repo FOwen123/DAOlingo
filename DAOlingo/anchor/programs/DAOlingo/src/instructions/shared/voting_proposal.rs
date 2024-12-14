@@ -4,7 +4,7 @@
 use anchor_lang::prelude::*;
 use anchor_lang::solana_program::clock::Clock;
 
-use crate::states::proposal::{Proposal, VoterInfo};
+use crate::states::proposal::Proposal;
 use crate::error::ErrorCode;    
 
 pub fn create_proposal(
@@ -32,16 +32,12 @@ pub fn create_proposal(
 
 pub fn cast_vote(ctx: Context<CastVote>, vote_for: bool) -> Result<()> {
     let proposal = &mut ctx.accounts.proposal;
-    let voter_info = &mut ctx.accounts.voter_info;
 
     // Ensure the proposal hasn't expired
     require!(
         Clock::get()?.unix_timestamp < proposal.expiration,
         ErrorCode::ProposalExpired
     );
-
-    // Ensure the voter hasn't already voted
-    require!(!voter_info.voted, ErrorCode::AlreadyVoted);
 
     // Update vote counts based on user's choice
     if vote_for {
@@ -50,8 +46,12 @@ pub fn cast_vote(ctx: Context<CastVote>, vote_for: bool) -> Result<()> {
         proposal.voted_against += 1;
     }
 
-    // Mark the voter as having voted
-    voter_info.voted = true;
+    Ok(())
+}
+
+
+pub fn delete_proposal(ctx: Context<DeleteProposal>) -> Result<()> {
+
     Ok(())
 }
 
@@ -81,6 +81,7 @@ pub fn results(ctx: Context<Results>) -> Result<()> {
 
 
 #[derive(Accounts)]
+#[instruction(title: String)]
 pub struct CreateProposal<'info> {
     #[account(mut)]
     pub user: Signer<'info>,
@@ -89,7 +90,7 @@ pub struct CreateProposal<'info> {
         init,
         payer = user,
         space = 8 + Proposal::LEN,
-        seeds = [b"proposal".as_ref()],
+        seeds = [title.as_bytes(), user.key.as_ref()],
         bump,
     )]
     pub proposal: Account<'info, Proposal>,
@@ -99,22 +100,36 @@ pub struct CreateProposal<'info> {
 
 
 #[derive(Accounts)]
+#[instruction(title: String)]
 pub struct CastVote<'info> {
-    #[account(mut)]
-    pub proposal: Account<'info, Proposal>,
-
     #[account(
-        init,
-        payer = voter,
-        space = 8 + VoterInfo::LEN,
-        seeds = [b"voter_info", proposal.key().as_ref(), voter.key().as_ref()],
-        bump,
+        mut,
+        seeds = [title.as_bytes(), voter.key.as_ref()],
+        bump, 
+        realloc = 8 + Proposal::LEN,
+        realloc::payer = voter,
+        realloc::zero = true,
     )]
-    pub voter_info: Account<'info, VoterInfo>,  
+    pub proposal: Account<'info, Proposal>, 
 
     #[account(mut)]
     pub voter: Signer<'info>,
 
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+#[instruction(title: String)]
+pub struct DeleteProposal<'info>{
+    #[account(
+        mut,
+        seeds = [title.as_bytes(), user.key.as_ref()],
+        bump, 
+        close = user,
+    )]
+    pub proposal: Account<'info, Proposal>,
+    #[account(mut)]
+    pub user: Signer<'info>,
     pub system_program: Program<'info, System>,
 }
 

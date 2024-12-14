@@ -55,31 +55,12 @@ export type Daolingo = {
       "accounts": [
         {
           "name": "proposal",
-          "writable": true
-        },
-        {
-          "name": "voterInfo",
           "writable": true,
           "pda": {
             "seeds": [
               {
-                "kind": "const",
-                "value": [
-                  118,
-                  111,
-                  116,
-                  101,
-                  114,
-                  95,
-                  105,
-                  110,
-                  102,
-                  111
-                ]
-              },
-              {
-                "kind": "account",
-                "path": "proposal"
+                "kind": "arg",
+                "path": "title"
               },
               {
                 "kind": "account",
@@ -297,17 +278,12 @@ export type Daolingo = {
           "pda": {
             "seeds": [
               {
-                "kind": "const",
-                "value": [
-                  112,
-                  114,
-                  111,
-                  112,
-                  111,
-                  115,
-                  97,
-                  108
-                ]
+                "kind": "arg",
+                "path": "title"
+              },
+              {
+                "kind": "account",
+                "path": "user"
               }
             ]
           }
@@ -331,6 +307,47 @@ export type Daolingo = {
           "type": "i64"
         }
       ]
+    },
+    {
+      "name": "deleteProposal",
+      "discriminator": [
+        195,
+        115,
+        85,
+        157,
+        254,
+        15,
+        175,
+        201
+      ],
+      "accounts": [
+        {
+          "name": "proposal",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "arg",
+                "path": "title"
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
     },
     {
       "name": "initializeUser",
@@ -627,19 +644,6 @@ export type Daolingo = {
         58,
         236
       ]
-    },
-    {
-      "name": "voterInfo",
-      "discriminator": [
-        95,
-        188,
-        134,
-        116,
-        132,
-        212,
-        148,
-        94
-      ]
     }
   ],
   "errors": [
@@ -842,18 +846,6 @@ export type Daolingo = {
                 "name": "role"
               }
             }
-          }
-        ]
-      }
-    },
-    {
-      "name": "voterInfo",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "voted",
-            "type": "bool"
           }
         ]
       }

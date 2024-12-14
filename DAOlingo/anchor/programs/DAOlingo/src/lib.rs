@@ -29,6 +29,10 @@ pub mod daolingo {
         instructions::shared::voting_proposal::cast_vote(ctx, vote_for)
     }
 
+    pub fn delete_proposal(ctx: Context<DeleteProposal>) -> Result<()> {
+        instructions::shared::voting_proposal::delete_proposal(ctx)
+    }
+
     pub fn status(ctx: Context<Status>) -> Result<()> {
         instructions::shared::voting_proposal::status(ctx)
     }

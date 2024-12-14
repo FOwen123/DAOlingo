@@ -1,3 +1,4 @@
+
 'use client'
 
 import { getDAOlingoProgram, getDAOlingoProgramId, DAOlingoIDL } from '@project/anchor'
@@ -45,7 +46,7 @@ export function useDAOlingoProgram() {
       accounts.refetch();
     },
     onError: (error) => {
-      toast.error("Error creating entry: ${error.message}");
+      toast.error(`Error creating entry: ${error.message}`);
     },
   });
 
@@ -78,9 +79,19 @@ export function useDAOlingoProgramAccount({ account }: { account: PublicKey }) {
       accounts.refetch();
     },
     onError: (error) => {
-      toast.error("Error creating entry: ${error.message}");
+      toast.error(`Error creating entry: ${error.message}`);
     },
   });
+
+  // const deleteProposal = useMutation({
+  //   mutationKey: ["proposal", "delete", { cluster, account }],
+  //   mutationFn: () => {
+  //     program.methods.deleteProposal().rpc();
+  //   },
+  //   onSuccess: () => {
+  //     accounts.refetch();
+  //   },
+  // })
 
   return {
     accountQuery,
