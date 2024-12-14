@@ -5,18 +5,62 @@ import { useMemo } from 'react'
 import { ellipsify } from '../ui/ui-layout'
 import { ExplorerLink } from '../cluster/cluster-ui'
 import { useDAOlingoProgram, useDAOlingoProgramAccount } from './DAOlingo-data-access'
+import { useWallet } from "@solana/wallet-adapter-react";
+import { useState } from "react";
 
 export function DAOlingoCreate() {
-  const { initialize } = useDAOlingoProgram()
+  const { CreateProposal } = useDAOlingoProgram();
+  const { publicKey } = useWallet();
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [expiration, setExpiration] = useState(BigInt(Date.now()));
+
+  const isFormValid = title.trim() !== "" && description.trim() !== "";
+
+  const handleSubmit = () => {
+    if (publicKey && isFormValid) {
+      CreateProposal.mutateAsync({ title, description, expiration });
+    }
+  };
+
+  const handleExpirationChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const selectedDate = new Date(e.target.value).getTime();
+    setExpiration(BigInt(selectedDate));
+  };
+
+  if (!publicKey) {
+    return <p>Connect your wallet</p>;
+  }
 
   return (
-    <button
-      className="btn btn-xs lg:btn-md btn-primary"
-      onClick={() => initialize.mutateAsync(Keypair.generate())}
-      disabled={initialize.isPending}
-    >
-      Create {initialize.isPending && '...'}
-    </button>
+    <div>
+      <input
+        type = "text"
+        placeholder = "Title"
+        value = {title}
+        onChange = {(e) => setTitle(e.target.value)}
+        className = "input input-bordered w-full max-w-xs"
+      />
+      <input
+        type="datetime-local"
+        onChange={handleExpirationChange}
+        className="input input-bordered w-full max-w-xs"
+      />
+      <textarea
+        placeholder = "Description"
+        value = {description}
+        onChange = {(e) => setDescription(e.target.value)}
+        className = "textarea textarea-bordered w-full max-w-xs"
+      />
+      <br></br>
+      <button
+        onClick = {handleSubmit}
+        disabled = {CreateProposal.isPending || !isFormValid}
+        className = "btn btn-xs lg:btn-md btn-primary"
+      >
+        Create Proposal {CreateProposal.isPending && <span className="loading loading-sm"></span>}
+      </button>
+    </div>
   )
 }
 
@@ -54,68 +98,91 @@ export function DAOlingoList() {
 }
 
 function DAOlingoCard({ account }: { account: PublicKey }) {
-  const { accountQuery, incrementMutation, setMutation, decrementMutation, closeMutation } = useDAOlingoProgramAccount({
+  const { accountQuery, CastVote } = useDAOlingoProgramAccount({
     account,
   })
 
-  const count = useMemo(() => accountQuery.data?.count ?? 0, [accountQuery.data?.count])
+  const { publicKey } = useWallet()
+  const [vote, setVote] = useState(false)
+  const title = accountQuery.data?.title
+  const description = accountQuery.data?.description
+  const expiration = new Date(Number(accountQuery.data?.expiration) * 1000).toLocaleString(); // Format expiration date
+  const votedFor = accountQuery.data?.votedFor || 0;
+  const votedAgainst = accountQuery.data?.votedAgainst || 0;
+
+  const isFormValid = !accountQuery.isLoading && !accountQuery.isError;
+
+  const handleSubmit = () => {
+    if (publicKey && isFormValid) {
+      CastVote.mutateAsync({ vote });
+    }
+  };
+
+  if (!publicKey){
+    return <p>Connect your wallet</p>;
+  }
 
   return accountQuery.isLoading ? (
     <span className="loading loading-spinner loading-lg"></span>
   ) : (
-    <div className="card card-bordered border-base-300 border-4 text-neutral-content">
-      <div className="card-body items-center text-center">
-        <div className="space-y-6">
-          <h2 className="card-title justify-center text-3xl cursor-pointer" onClick={() => accountQuery.refetch()}>
-            {count}
-          </h2>
-          <div className="card-actions justify-around">
-            <button
-              className="btn btn-xs lg:btn-md btn-outline"
-              onClick={() => incrementMutation.mutateAsync()}
-              disabled={incrementMutation.isPending}
-            >
-              Increment
-            </button>
-            <button
-              className="btn btn-xs lg:btn-md btn-outline"
-              onClick={() => {
-                const value = window.prompt('Set value to:', count.toString() ?? '0')
-                if (!value || parseInt(value) === count || isNaN(parseInt(value))) {
-                  return
-                }
-                return setMutation.mutateAsync(parseInt(value))
-              }}
-              disabled={setMutation.isPending}
-            >
-              Set
-            </button>
-            <button
-              className="btn btn-xs lg:btn-md btn-outline"
-              onClick={() => decrementMutation.mutateAsync()}
-              disabled={decrementMutation.isPending}
-            >
-              Decrement
-            </button>
-          </div>
-          <div className="text-center space-y-4">
-            <p>
-              <ExplorerLink path={`account/${account}`} label={ellipsify(account.toString())} />
-            </p>
-            <button
-              className="btn btn-xs btn-secondary btn-outline"
-              onClick={() => {
-                if (!window.confirm('Are you sure you want to close this account?')) {
-                  return
-                }
-                return closeMutation.mutateAsync()
-              }}
-              disabled={closeMutation.isPending}
-            >
-              Close
-            </button>
-          </div>
+    <div className="card card-bordered border-base-300 border-4 text-neutral-content w-full max-w-lg mx-auto">
+      <div className="card-body items-center text-center space-y-4">
+        {/* Title */}
+        <h2
+          className="card-title text-3xl cursor-pointer"
+          onClick={() => accountQuery.refetch()}
+        >
+          {title}
+        </h2>
+
+        {/* Description */}
+        <p className="text-base">{description}</p>
+
+        {/* Details */}
+        <div className="bg-base-200 p-4 rounded-lg shadow-md w-full">
+          <h3 className="text-lg font-bold mb-2">Proposal Details</h3>
+          <ul className="list-disc list-inside text-left">
+            <li>
+              <span className="font-semibold">Expiration:</span> {expiration}
+            </li>
+            <li>
+              <span className="font-semibold">Votes For:</span> {votedFor.toString()}
+            </li>
+            <li>
+              <span className="font-semibold">Votes Against:</span> {votedAgainst.toString()}
+            </li>
+          </ul>
         </div>
+
+        {/* Voting Buttons */}
+        <div className="card-actions justify-around mt-4">
+          <button
+            className="btn btn-xs lg:btn-md btn-outline"
+            onClick={() => setVote(true)}
+            disabled={CastVote.isPending}
+          >
+            Vote For
+          </button>
+          <button
+            className="btn btn-xs lg:btn-md btn-outline"
+            onClick={() => setVote(false)}
+            disabled={CastVote.isPending}
+          >
+            Vote Against
+          </button>
+          <button
+            className="btn btn-xs lg:btn-md btn-primary"
+            onClick={handleSubmit}
+            disabled={CastVote.isPending || !isFormValid}
+          >
+            Submit Vote {CastVote.isPending && <span className="loading loading-sm"></span>}
+          </button>
+        </div>
+
+        {/* Explorer Link */}
+        <p className="mt-4">
+          <ExplorerLink path={`account/${account}`} label={ellipsify(account.toString())} />
+        </p>
       </div>
     </div>
   )

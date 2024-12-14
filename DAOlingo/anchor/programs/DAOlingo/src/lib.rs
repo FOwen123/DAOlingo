@@ -3,7 +3,7 @@
 
 use anchor_lang::prelude::*;
 
-declare_id!("3sxbp3FudD9sjCtDvUgmpf9P3ENJd3LdsWLo196XW8CL");
+declare_id!("FHYWnVuAha7HgqGANbEYf939JEkjp5j1udTZoKKnZJBb");
 
 pub mod states;
 pub mod instructions;
@@ -21,12 +21,16 @@ pub mod daolingo {
         instructions::shared::user_initialization::initialize_user(ctx)
     }
     
-    pub fn create_proposal(ctx: Context<CreateProposal>, description: String, expiration: i64, proposal_number: u64) -> Result<()> {
-        instructions::shared::voting_proposal::create_proposal(ctx, description, expiration, proposal_number)
+    pub fn create_proposal(ctx: Context<CreateProposal>, title: String, description: String, expiration: i64) -> Result<()> {
+        instructions::shared::voting_proposal::create_proposal(ctx, title, description, expiration)
     }
 
     pub fn cast_vote(ctx: Context<CastVote>, vote_for: bool) -> Result<()> {
         instructions::shared::voting_proposal::cast_vote(ctx, vote_for)
+    }
+
+    pub fn delete_proposal(ctx: Context<DeleteProposal>) -> Result<()> {
+        instructions::shared::voting_proposal::delete_proposal(ctx)
     }
 
     pub fn status(ctx: Context<Status>) -> Result<()> {
