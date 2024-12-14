@@ -287,22 +287,6 @@ export type Daolingo = {
       ],
       "accounts": [
         {
-          "name": "dao",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  100,
-                  97,
-                  111
-                ]
-              }
-            ]
-          }
-        },
-        {
           "name": "user",
           "writable": true,
           "signer": true
@@ -335,16 +319,16 @@ export type Daolingo = {
       ],
       "args": [
         {
+          "name": "title",
+          "type": "string"
+        },
+        {
           "name": "description",
           "type": "string"
         },
         {
           "name": "expiration",
           "type": "i64"
-        },
-        {
-          "name": "proposalNumber",
-          "type": "u64"
         }
       ]
     },
@@ -580,19 +564,6 @@ export type Daolingo = {
       ]
     },
     {
-      "name": "dao",
-      "discriminator": [
-        163,
-        9,
-        47,
-        31,
-        52,
-        85,
-        197,
-        49
-      ]
-    },
-    {
       "name": "mVoterInfo",
       "discriminator": [
         197,
@@ -674,41 +645,46 @@ export type Daolingo = {
   "errors": [
     {
       "code": 6000,
+      "name": "titleTooLong",
+      "msg": "Title too long"
+    },
+    {
+      "code": 6001,
       "name": "descriptionTooLong",
       "msg": "Description too long"
     },
     {
-      "code": 6001,
+      "code": 6002,
       "name": "proposalExpired",
       "msg": "The proposal has already expired."
     },
     {
-      "code": 6002,
+      "code": 6003,
       "name": "alreadyVoted",
       "msg": "The voter has already cast a vote."
     },
     {
-      "code": 6003,
+      "code": 6004,
       "name": "invalidProposalNumber",
       "msg": "Invalid proposal number."
     },
     {
-      "code": 6004,
+      "code": 6005,
       "name": "unauthorizedRole",
       "msg": "Unauthorized: Only mentors can perform this action."
     },
     {
-      "code": 6005,
+      "code": 6006,
       "name": "unauthorizedRoleApprentice",
       "msg": "Unauthorized: Only apprentices can submit certifications."
     },
     {
-      "code": 6006,
+      "code": 6007,
       "name": "unauthorizedApproval",
       "msg": "Unauthorized: Only mentors can approve certifications."
     },
     {
-      "code": 6007,
+      "code": 6008,
       "name": "certificationAlreadyApproved",
       "msg": "Certification is already approved."
     }
@@ -732,18 +708,6 @@ export type Daolingo = {
           {
             "name": "approved",
             "type": "bool"
-          }
-        ]
-      }
-    },
-    {
-      "name": "dao",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "totalProposals",
-            "type": "u64"
           }
         ]
       }
@@ -832,10 +796,6 @@ export type Daolingo = {
           {
             "name": "description",
             "type": "string"
-          },
-          {
-            "name": "voteNumber",
-            "type": "u64"
           },
           {
             "name": "expiration",

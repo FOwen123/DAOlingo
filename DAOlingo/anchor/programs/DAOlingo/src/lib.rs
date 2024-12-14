@@ -21,8 +21,8 @@ pub mod daolingo {
         instructions::shared::user_initialization::initialize_user(ctx)
     }
     
-    pub fn create_proposal(ctx: Context<CreateProposal>, description: String, expiration: i64, proposal_number: u64) -> Result<()> {
-        instructions::shared::voting_proposal::create_proposal(ctx, description, expiration, proposal_number)
+    pub fn create_proposal(ctx: Context<CreateProposal>, title: String, description: String, expiration: i64) -> Result<()> {
+        instructions::shared::voting_proposal::create_proposal(ctx, title, description, expiration)
     }
 
     pub fn cast_vote(ctx: Context<CastVote>, vote_for: bool) -> Result<()> {

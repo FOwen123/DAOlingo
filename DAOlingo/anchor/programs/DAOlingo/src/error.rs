@@ -2,6 +2,8 @@ use anchor_lang::prelude::*;
 
 #[error_code]
 pub enum ErrorCode {
+    #[msg("Title too long")]
+    TitleTooLong,
     #[msg("Description too long")]
     DescriptionTooLong,
     #[msg("The proposal has already expired.")]
